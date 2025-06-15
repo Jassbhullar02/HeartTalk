@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - Model to represent each chat message
 struct ChatMessage: Identifiable {
     let id = UUID()
     var text: String

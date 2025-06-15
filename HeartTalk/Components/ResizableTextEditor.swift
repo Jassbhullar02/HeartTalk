@@ -8,10 +8,14 @@
 import SwiftUI
 
 struct ResizableTextEditor: UIViewRepresentable {
+    
+    // MARK: - Properties
     @Binding var text: String
     @Binding var dynamicHeight: CGFloat
 
     private let maxHeight: CGFloat = 120  // Max height for the TextEditor
+
+    // MARK: - Public Functions
 
     func makeUIView(context: Context) -> UITextView {
         let textView = UITextView()

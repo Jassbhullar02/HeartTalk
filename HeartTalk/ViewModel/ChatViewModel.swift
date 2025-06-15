@@ -9,6 +9,7 @@ import SwiftUI
 
 class ChatViewModel: ObservableObject {
     
+    // MARK: - Properties
     @Published var messages: [ChatMessage] = []
     @Published var userInput: String = ""
     @Published var isLoading: Bool = false
@@ -26,6 +27,8 @@ class ChatViewModel: ObservableObject {
         messages.append(welcome)
     }
     
+    // MARK: - Public Functions
+
     func sendMessage() {
         let trimmedText = userInput.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedText.isEmpty else { return }

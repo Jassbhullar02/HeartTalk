@@ -9,6 +9,7 @@ import Foundation
 
 class CohereAPIService {
     
+    // MARK: - Properties
     private let endpoint = "https://api.cohere.ai/v1/chat"
     private let apiKey: String
     
@@ -29,12 +30,17 @@ class CohereAPIService {
         guard let path = Bundle.main.path(forResource: "APIKeys", ofType: "plist"),
               let dict = NSDictionary(contentsOfFile: path),
               let key = dict["COHERE_API_KEY"] as? String else {
-            print("❌ API Key not found.")
+            #if DEBUG
+            fatalError("❌ API Key not found. Make sure APIKeys.plist is added.")
+            #else
+            print("❌ API Key missing.")
+            #endif
             return nil
         }
         self.apiKey = key
     }
     
+    // MARK: - Public Functions
     func sendMessage(_ message: String, completion: @escaping (String?) -> Void) {
         guard let url = URL(string: endpoint) else {
             completion(nil)

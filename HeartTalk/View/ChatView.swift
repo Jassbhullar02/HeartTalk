@@ -7,6 +7,8 @@
 import SwiftUI
 
 struct ChatView: View {
+    
+    // MARK: - Properties
     @StateObject private var viewModel = ChatViewModel()
     @State private var inputHeight: CGFloat = 40
     @State private var isDarkMode: Bool = false
@@ -25,9 +27,9 @@ struct ChatView: View {
                             .foregroundColor(.green)
                             .padding()
                     }
-
+                    
                     Spacer()
-
+                    
                     Button(action: {
                         isDarkMode.toggle()
                     }) {
@@ -37,7 +39,7 @@ struct ChatView: View {
                             .padding()
                     }
                 }
-
+                
                 ScrollViewReader { proxy in
                     ScrollView {
                         LazyVStack(spacing: 12) {
@@ -70,19 +72,19 @@ struct ChatView: View {
                         scrollToBottom(proxy: proxy)
                     }
                 }
-
+                
                 Divider()
-
+                
                 HStack(spacing: 12) {
                     ZStack(alignment: .topLeading) {
                         
                         if viewModel.userInput.isEmpty {
-                                Text("Ask anything...")
+                            Text("Ask anything...")
                                 .foregroundColor(.black)
-                                    .padding(.horizontal, 20)
-                                    .padding(.vertical, 14)
-                            }
-
+                                .padding(.horizontal, 20)
+                                .padding(.vertical, 14)
+                        }
+                        
                         ResizableTextEditor(text: $viewModel.userInput, dynamicHeight: $inputHeight)
                             .frame(height: inputHeight)
                             .padding(12)
@@ -90,7 +92,7 @@ struct ChatView: View {
                             .cornerRadius(20)
                             .focused($isInputFocused)
                     }
-
+                    
                     Button(action: {
                         viewModel.sendMessage()
                     }) {
@@ -108,7 +110,7 @@ struct ChatView: View {
                 .padding()
                 .background(.ultraThinMaterial)
             }
-
+            
             if showScrollToBottom {
                 Button(action: {
                     if viewModel.messages.last != nil {
@@ -142,7 +144,8 @@ struct ChatView: View {
         .preferredColorScheme(isDarkMode ? .dark : .light)
     }
     
-    func scrollToBottom(proxy: ScrollViewProxy) {
+    // MARK: - Private Functions
+    private func scrollToBottom(proxy: ScrollViewProxy) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             if let last = viewModel.messages.last {
                 withAnimation {
@@ -154,9 +157,11 @@ struct ChatView: View {
 }
 
 struct MessageBubbleView: View {
+    
+    // MARK: - Properties
     let message: ChatMessage
     var onEdit: ((ChatMessage) -> Void)? = nil
-
+    
     var body: some View {
         HStack(alignment: .top) {
             if message.isUser {
@@ -175,19 +180,19 @@ struct MessageBubbleView: View {
                             }) {
                                 Label("Copy", systemImage: "doc.on.doc")
                             }
-
+                            
                             Button(action: {
                                 onEdit?(message)
                             }) {
                                 Label("Edit", systemImage: "pencil")
                             }
                         }
-
+                    
                     HStack(spacing: 4) {
                         Image(systemName: "checkmark.circle.fill")
                             .font(.caption2)
                             .foregroundColor(Color.primary.opacity(0.6))
-
+                        
                         Text(statusText)
                             .font(.caption2)
                             .foregroundColor(Color.primary.opacity(0.6))
@@ -199,7 +204,7 @@ struct MessageBubbleView: View {
                     Text("AI")
                         .font(.caption)
                         .foregroundColor(.gray)
-
+                    
                     Text(message.text)
                         .padding(12)
                         .background(
@@ -226,7 +231,7 @@ struct MessageBubbleView: View {
         }
         .padding(.horizontal)
     }
-
+    
     var statusText: String {
         switch message.status {
         case .sent: return "Sent"
